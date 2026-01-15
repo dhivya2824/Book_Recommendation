@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register | BookVerse</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#2193f3,#ec6ead);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.auth-container{
+    width:400px;
+    padding:35px;
+    background:rgba(255,255,255,0.2);
+    backdrop-filter:blur(15px);
+    border-radius:25px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.3);
+    text-align:center;
+    color:#fff;
+}
+
+.auth-container h2{
+    margin-bottom:25px;
+    font-weight:600;
+}
+
+.input-box{
+    position:relative;
+    margin-bottom:16px;
+}
+
+.input-box i{
+    position:absolute;
+    top:50%;
+    left:18px;
+    transform:translateY(-50%);
+    color:#8e2de2;
+}
+
+.input-box input{
+    width:100%;
+    padding:12px 45px;
+    border-radius:30px;
+    border:none;
+    outline:none;
+    font-size:14px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg,#f857a6,#8e2de2);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.auth-container p{
+    margin-top:18px;
+    font-size:14px;
+}
+
+.auth-container a{
+    color:#ffe1ff;
+    font-weight:500;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="auth-container">
+    <h2>Create Account ✨</h2>
+
+    <form method="POST">
+        <div class="input-box">
+            <i class="fa fa-user"></i>
+            <input type="text" name="name" placeholder="Full Name" required>
+        </div>
+
+        <div class="input-box">
+            <i class="fa fa-envelope"></i>
+            <input type="email" name="email" placeholder="Email" required>
+        </div>
+
+        <div class="input-box">
+            <i class="fa fa-lock"></i>
+            <input type="password" name="password" placeholder="Password" required>
+        </div>
+
+        <div class="input-box">
+            <i class="fa fa-lock"></i>
+            <input type="password" name="confirm" placeholder="Confirm Password" required>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account?
+       <a href="{{ url_for('login') }}">Login</a>
+    </p>
+</div>
+
+</body>
+</html>

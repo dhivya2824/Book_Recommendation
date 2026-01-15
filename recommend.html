@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav style="display:flex;justify-content:space-between;align-items:center;padding:20px;">
+    <h1>✨ Recommended for You</h1>
+    <div>
+        <a href="{{ url_for('home') }}" style="margin:0 10px;color:#fff;text-decoration:none;font-weight:500;">Home</a>
+        <a href="{{ url_for('add_book') }}" style="margin:0 10px;color:#fff;text-decoration:none;font-weight:500;">➕ Add Book</a>
+        <a href="{{ url_for('favorites_page') }}" style="margin:0 10px;color:#fff;text-decoration:none;font-weight:500;">❤️ Favorites</a>
+        <a href="{{ url_for('logout') }}" style="margin:0 10px;color:#fff;text-decoration:none;font-weight:500;">Logout</a>
+    </div>
+</nav>
+
+<div class="book-list">
+    {% for book in books %}
+    <div class="book-card">
+        <img src="{{ book['Image-URL-M'] }}" alt="Book Image" onerror="this.onerror=null; this.src='https://via.placeholder.com/150x220?text=No+Image';">
+        <h3>{{ book['Book-Title'] }}</h3>
+        <p><b>Author:</b> {{ book['Book-Author'] }}</p>
+        <p><b>Year:</b> {{ book['Year-Of-Publication'] }}</p>
+        <p><b>Publisher:</b> {{ book['Publisher'] }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
