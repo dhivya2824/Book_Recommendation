@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    
+{% if session.get('user') %}
+<a href="{{ url_for('logout') }}" style="
+    position:fixed;
+    top:20px;
+    right:30px;
+    background:linear-gradient(135deg,#f857a6,#8e2de2);
+    color:white;
+    padding:10px 20px;
+    border-radius:25px;
+    text-decoration:none;
+    font-weight:500;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);">
+    Logout
+</a>
+{% endif %}
+
+
+<nav style="display:flex;justify-content:space-between;align-items:center;padding:20px;">
+    <h1>BookVerse</h1>
+    <div style="display:flex;align-items:center;gap:15px;">
+        <span style="color:#fff;background:rgba(255,255,255,0.2);padding:8px 15px;border-radius:20px;font-size:14px;">
+            ❤️ {{ favorites|length }} Favorites
+        </span>
+        <a href="{{ url_for('home') }}" style="margin:0 10px;color:#8e2de2;text-decoration:none;font-weight:500;">Home</a>
+        <a href="{{ url_for('add_book') }}" style="margin:0 10px;color:#8e2de2;text-decoration:none;font-weight:500;">➕ Add Book</a>
+        <a href="{{ url_for('favorites_page') }}" style="margin:0 10px;color:#8e2de2;text-decoration:none;font-weight:500;">❤️ Favorites</a>
+        <a href="{{ url_for('recommend') }}" style="margin:0 10px;color:#8e2de2;text-decoration:none;font-weight:500;">✨ Recommendations</a>
+    </div>
+</nav>
+
+<!-- 🔍 Search Box -->
+<div class="search-container">
+    <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search book by title or author..."
+        onkeyup="searchBooks()">
+    <select id="yearFilter" onchange="filterByYear()" style="padding:14px 20px;font-size:16px;border-radius:30px;border:none;margin-left:10px;box-shadow:0 12px 25px rgba(0,0,0,0.25);">
+        <option value="">All Years</option>
+        <option value="2000-2024">2000-2024</option>
+        <option value="1990-1999">1990-1999</option>
+        <option value="1980-1989">1980-1989</option>
+        <option value="1970-1979">1970-1979</option>
+    </select>
+</div>
+
+<!-- 📚 Book Grid -->
+<div class="book-list">
+    {% for book in books %}
+    <div class="book-card"
+         data-title="{{ book['Book-Title'] | lower }}"
+         data-author="{{ book['Book-Author'] | lower }}"
+         data-year="{{ book['Year-Of-Publication'] }}">
+
+        <img 
+            src="{{ book['Image-URL-M'] }}"
+            alt="Book Image"
+            onerror="this.onerror=null; this.src='https://via.placeholder.com/150x220?text=No+Image';"
+        >
+
+        <button onclick="toggleFavorite('{{ book['Book-Title'] }}')" 
+                class="fav-btn {% if book['Book-Title'] in favorites %}active{% endif %}"
+                id="fav-{{ loop.index }}">
+            ❤️
+        </button>
+        <h3>{{ book['Book-Title'] }}</h3>
+        <p><b>Author:</b> {{ book['Book-Author'] }}</p>
+        <p><b>Year:</b> {{ book['Year-Of-Publication'] }}</p>
+        <p><b>Publisher:</b> {{ book['Publisher'] }}</p>
+
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+function searchBooks() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.getElementsByClassName("book-card");
+    for (let i = 0; i < cards.length; i++) {
+        let title = cards[i].getAttribute("data-title");
+        let author = cards[i].getAttribute("data-author");
+        if (title.includes(input) || author.includes(input)) {
+            cards[i].style.display = "block";
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+}
+
+function filterByYear() {
+    let filter = document.getElementById("yearFilter").value;
+    let cards = document.getElementsByClassName("book-card");
+    
+    for (let i = 0; i < cards.length; i++) {
+        let year = parseInt(cards[i].getAttribute("data-year"));
+        let show = true;
+        
+        if (filter) {
+            let [start, end] = filter.split('-').map(Number);7
+            show = year >= start && year <= end;
+        }
+        
+        cards[i].style.display = show ? "block" : "none";
+    }
+}
+
+function toggleFavorite(title) {
+    fetch('/toggle_favorite', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({title: title})
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success) {
+            let btns = document.querySelectorAll('.fav-btn');
+            btns.forEach(btn => {
+                if(btn.onclick.toString().includes(title)) {
+                    btn.classList.toggle('active');
+                }
+            });
+            location.reload();
+        }
+    });
+}
+</script>
+
+</body>
+</html>

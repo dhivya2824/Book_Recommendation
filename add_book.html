@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Book</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav style="display:flex;justify-content:space-between;align-items:center;padding:20px;">
+    <h1>➕ Add New Book</h1>
+    <div>
+        <a href="{{ url_for('home') }}" style="margin:0 10px;color:#fff;text-decoration:none;font-weight:500;">Home</a>
+        <a href="{{ url_for('favorites_page') }}" style="margin:0 10px;color:#fff;text-decoration:none;font-weight:500;">❤️ Favorites</a>
+        <a href="{{ url_for('recommend') }}" style="margin:0 10px;color:#fff;text-decoration:none;font-weight:500;">✨ Recommendations</a>
+        <a href="{{ url_for('logout') }}" style="margin:0 10px;color:#fff;text-decoration:none;font-weight:500;">Logout</a>
+    </div>
+</nav>
+
+<div style="max-width:600px;margin:50px auto;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);padding:40px;border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,0.3);">
+    <form method="POST" action="{{ url_for('add_book') }}">
+        
+        <div style="margin-bottom:20px;">
+            <label style="color:#fff;font-weight:500;display:block;margin-bottom:8px;">Book Title *</label>
+            <input type="text" name="title" required 
+                   style="width:100%;padding:12px;border-radius:10px;border:none;font-size:16px;">
+        </div>
+
+        <div style="margin-bottom:20px;">
+            <label style="color:#fff;font-weight:500;display:block;margin-bottom:8px;">Author *</label>
+            <input type="text" name="author" required 
+                   style="width:100%;padding:12px;border-radius:10px;border:none;font-size:16px;">
+        </div>
+
+        <div style="margin-bottom:20px;">
+            <label style="color:#fff;font-weight:500;display:block;margin-bottom:8px;">Year of Publication *</label>
+            <input type="number" name="year" required min="1000" max="2024"
+                   style="width:100%;padding:12px;border-radius:10px;border:none;font-size:16px;">
+        </div>
+
+        <div style="margin-bottom:20px;">
+            <label style="color:#fff;font-weight:500;display:block;margin-bottom:8px;">Publisher *</label>
+            <input type="text" name="publisher" required 
+                   style="width:100%;padding:12px;border-radius:10px;border:none;font-size:16px;">
+        </div>
+
+        <div style="margin-bottom:20px;">
+            <label style="color:#fff;font-weight:500;display:block;margin-bottom:8px;">Book Cover Image URL *</label>
+            <input type="url" name="image_url" required placeholder="https://example.com/book-cover.jpg"
+                   style="width:100%;padding:12px;border-radius:10px;border:none;font-size:16px;"
+                   oninput="previewImage(this.value)">
+            <small style="color:#fbe9ff;display:block;margin-top:5px;">
+                💡 Tip: Right-click on any book cover online → Copy image address
+            </small>
+        </div>
+
+        <div id="imagePreview" style="text-align:center;margin:20px 0;display:none;">
+            <p style="color:#fff;margin-bottom:10px;">Preview:</p>
+            <img id="previewImg" src="" alt="Preview" style="max-width:150px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.3);">
+        </div>
+
+        <button type="submit" 
+                style="width:100%;padding:15px;background:linear-gradient(135deg,#f857a6,#8e2de2);color:#fff;border:none;border-radius:30px;font-size:18px;font-weight:600;cursor:pointer;box-shadow:0 10px 25px rgba(142,45,226,0.4);transition:all 0.3s;">
+            ➕ Add Book
+        </button>
+
+        <a href="{{ url_for('home') }}" 
+           style="display:block;text-align:center;margin-top:15px;color:#fff;text-decoration:none;">
+            Cancel
+        </a>
+    </form>
+</div>
+
+<script>
+function previewImage(url) {
+    const preview = document.getElementById('imagePreview');
+    const img = document.getElementById('previewImg');
+    
+    if (url && url.startsWith('http')) {
+        img.src = url;
+        preview.style.display = 'block';
+    } else {
+        preview.style.display = 'none';
+    }
+}
+</script>
+
+</body>
+</html>
